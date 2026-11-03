@@ -1,8 +1,8 @@
 {
-  "name": "ev-defteri",
-  "version": "0.3.1",
+  "name": "butce-dostum",
+  "version": "0.4.0",
   "private": true,
-  "description": "Aileler için sakin bir ev bütçe ve fatura defteri (web prototipi)",
+  "description": "Bütçe Dostum: aileler için sakin bir ev bütçesi ve fatura takip uygulaması (web prototipi)",
   "type": "module",
   "scripts": {
     "start": "node server.js",

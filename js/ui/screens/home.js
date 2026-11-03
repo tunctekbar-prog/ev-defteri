@@ -18,8 +18,25 @@ function greeting() {
 function welcomeCard() {
   return html`
     <section class="card card--welcome" aria-labelledby="welcome-title">
-      <h2 id="welcome-title">Ev defterine hoş geldin 🌿</h2>
-      <p>Evin harcamalarını ve ödemelerini burada sakince takip edebilirsin. Her şey sadece bu cihazda kalır.</p>
+      <div class="welcome__hero">
+        <img class="welcome__logo" src="icons/icon.svg" alt="" width="76" height="76" />
+        <h2 id="welcome-title">Bütçe Dostum'a hoş geldin</h2>
+        <p class="welcome__lead">Evin parasını sakince takip edelim.</p>
+      </div>
+      <ul class="welcome__points">
+        <li>
+          <span class="welcome__point-icon" aria-hidden="true">✍️</span>
+          <span><strong>Saniyeler içinde yaz.</strong> Tutarı gir, kategoriye dokun, bitti.</span>
+        </li>
+        <li>
+          <span class="welcome__point-icon" aria-hidden="true">📅</span>
+          <span><strong>Ödemeleri unutma.</strong> Kira, fatura, aidat ne zaman, hep gözünün önünde.</span>
+        </li>
+        <li>
+          <span class="welcome__point-icon" aria-hidden="true">🔒</span>
+          <span><strong>Sadece sende.</strong> Kayıtların bu telefonda kalır, hiçbir yere gönderilmez.</span>
+        </li>
+      </ul>
       <form class="budget-form" data-budget-form>
         <label for="budget-input">Bir ayda eve ne kadar harcamayı düşünüyorsunuz?</label>
         <div class="money-field">
@@ -132,10 +149,12 @@ export default {
         <h1 tabindex="-1">${greeting()} 👋</h1>
         <p class="muted">${longDayLabel(today)}</p>
       </header>
-      ${isNew ? welcomeCard() : html`${summaryCard(summary)}${upcomingCard(upcoming)}`}
-      <a class="btn btn--primary btn--xl btn--block add-cta" href="#/add">
-        <span aria-hidden="true">＋</span> Harcama ekle
-      </a>`);
+      ${isNew
+        ? welcomeCard() // ilk açılışta yapışık düğme yok: karşılama kartındaki düğmelerin üstüne binerdi
+        : html`${summaryCard(summary)}${upcomingCard(upcoming)}
+            <a class="btn btn--primary btn--xl btn--block add-cta" href="#/add">
+              <span aria-hidden="true">＋</span> Harcama ekle
+            </a>`}`);
 
     root.querySelector('[data-edit-budget]')?.addEventListener('click', () => openBudgetSheet(ctx));
 

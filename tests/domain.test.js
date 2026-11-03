@@ -312,8 +312,31 @@ test('yedek: indirilen dosya geri yüklenince veri aynen döner, bozuk dosya red
 
   assert.throws(() => parseBackup('{bozuk'), BackupError);
   assert.throws(() => parseBackup(JSON.stringify({ foo: 1 })), BackupError);
-  assert.throws(() => parseBackup(JSON.stringify({ app: 'evdefteri', backupVersion: 99, data: {} })), BackupError);
+  assert.throws(() => parseBackup(JSON.stringify({ app: 'butcedostum', backupVersion: 99, data: {} })), BackupError);
   const broken = JSON.parse(createBackup(original, '2026-11-03'));
   broken.data.transactions[0].amount = '450';
   assert.throws(() => parseBackup(JSON.stringify(broken)), BackupError);
+});
+
+test('ad değişikliği: Ev Defteri verisi ve yedekleri Bütçe Dostum\'a taşınır', async () => {
+  const { createLocalStorageAdapter } = await import('../js/data/storage.js');
+  const { parseBackup } = await import('../js/data/backup.js');
+  const mem = new Map([['evdefteri', JSON.stringify({ version: 1, transactions: [], payments: [], settings: { monthlyBudget: 500000, onboarded: true } })]]);
+  globalThis.localStorage = {
+    getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+    setItem: (k, v) => mem.set(k, String(v)),
+    removeItem: (k) => mem.delete(k),
+  };
+  try {
+    const store = createStore(createLocalStorageAdapter());
+    assert.equal(store.getState().settings.monthlyBudget, 500000); // eski anahtardan okundu
+    assert.ok(mem.has('evdefteri')); // henüz bir şey kaydedilmeden eski veri silinmez
+    store.setMonthlyBudget(600000);
+    assert.deepEqual([...mem.keys()], ['butcedostum']);
+    assert.equal(JSON.parse(mem.get('butcedostum')).settings.monthlyBudget, 600000);
+  } finally {
+    delete globalThis.localStorage;
+  }
+  // Eski adla alınmış yedek de yüklenir
+  assert.equal(parseBackup(JSON.stringify({ app: 'evdefteri', backupVersion: 1, data: { transactions: [], payments: [] } })).counts.transactions, 0);
 });

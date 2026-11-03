@@ -42,7 +42,7 @@ function parseHash() {
 function render({ resetScroll = false } = {}) {
   if (!current.name) return; // ilk yönlendirmeden önce
   const screen = SCREENS[current.name];
-  document.title = `${screen.title} · Ev Defteri`;
+  document.title = `${screen.title} · Bütçe Dostum`;
   root.replaceChildren();
   screen.mount(root, ctx, current.params);
   if (resetScroll) window.scrollTo(0, 0);

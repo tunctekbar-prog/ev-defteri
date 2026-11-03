@@ -1,5 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#5E8B68"/>
-  <path d="M256 120 112 236v156a24 24 0 0 0 24 24h88V316h64v100h88a24 24 0 0 0 24-24V236Z" fill="#FBF7EF"/>
-  <circle cx="256" cy="250" r="30" fill="#C98B5A"/>
+  <g transform="translate(-12 0)">
+    <polygon points="178,214 196,150 246,196" fill="#FBF7EF"/>
+    <rect x="176" y="340" width="46" height="76" rx="16" fill="#FBF7EF"/>
+    <rect x="296" y="340" width="46" height="76" rx="16" fill="#FBF7EF"/>
+    <ellipse cx="256" cy="290" rx="146" ry="108" fill="#FBF7EF"/>
+    <rect x="380" y="252" width="48" height="68" rx="18" fill="#FBF7EF"/>
+    <ellipse cx="404" cy="274" rx="6" ry="8" fill="#5E8B68"/>
+    <ellipse cx="404" cy="298" rx="6" ry="8" fill="#5E8B68"/>
+    <circle cx="336" cy="258" r="11" fill="#3F6648"/>
+    <circle cx="256" cy="126" r="40" fill="#C98B5A"/>
+    <circle cx="256" cy="126" r="26" fill="#E0B48C"/>
+    <rect x="218" y="204" width="76" height="14" rx="7" fill="#3F6648"/>
+  </g>
 </svg>

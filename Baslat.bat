@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Ev Defteri
+title Butce Dostum
 cd /d "%~dp0"
 
 where node >nul 2>nul
@@ -16,7 +16,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo  Ev Defteri baslatiliyor...
+echo  Butce Dostum baslatiliyor...
 echo  Tarayici birazdan kendiliginden acilacak.
 echo  Kapatmak icin bu pencereyi kapatin.
 echo.

@@ -1,14 +1,15 @@
 // Yedek dosyası: tüm veri tek bir JSON dosyasında. Tarayıcı, DOM bilmez; Node'da test edilir.
 //
-// Dosya şekli: { app: 'evdefteri', backupVersion: 1, exportedAt: 'YYYY-MM-DD', data: { ...store verisi } }
+// Dosya şekli: { app: 'butcedostum', backupVersion: 1, exportedAt: 'YYYY-MM-DD', data: { ...store verisi } }
 // Yüklerken veri store.importData() içinde migrate()'ten geçer; burada yalnızca bozuk/yabancı
 // dosyalar ayıklanır.
 
-export const BACKUP_APP = 'evdefteri';
+export const BACKUP_APP = 'butcedostum';
+const LEGACY_APPS = ['evdefteri']; // uygulamanın eski adı (Ev Defteri) ile alınmış yedekler de yüklenir
 export const BACKUP_VERSION = 1;
 
 export function backupFileName(today) {
-  return `ev-defteri-yedek-${today}.json`;
+  return `butce-dostum-yedek-${today}.json`;
 }
 
 export function createBackup(state, today) {
@@ -46,10 +47,10 @@ export function parseBackup(text) {
   try {
     file = JSON.parse(text);
   } catch {
-    throw new BackupError('Bu dosya okunamadı. Ev Defteri\'nden indirilen yedek dosyasını seçtiğinden emin olur musun?');
+    throw new BackupError('Bu dosya okunamadı. Bütçe Dostum\'dan indirilen yedek dosyasını seçtiğinden emin olur musun?');
   }
-  if (!file || file.app !== BACKUP_APP || !file.data || typeof file.data !== 'object') {
-    throw new BackupError('Bu dosya bir Ev Defteri yedeğine benzemiyor.');
+  if (!file || ![BACKUP_APP, ...LEGACY_APPS].includes(file.app) || !file.data || typeof file.data !== 'object') {
+    throw new BackupError('Bu dosya bir Bütçe Dostum yedeğine benzemiyor.');
   }
   if (file.backupVersion > BACKUP_VERSION) {
     throw new BackupError('Bu yedek uygulamanın daha yeni bir sürümüyle alınmış. Önce uygulamayı güncellemek gerekiyor.');

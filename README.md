@@ -1,6 +1,8 @@
-# Ev Defteri (web prototipi)
+# Bütçe Dostum (web prototipi)
 
-Aileler için sakin bir ev bütçe ve fatura defteri. Önce telefon ekranı için tasarlandı (mobile-first). Sunucu ve hesap yok; tüm veriler kullanıcının tarayıcısında (`localStorage`) kalıyor.
+Aileler için sakin bir ev bütçesi ve fatura takip uygulaması. (Eski adı: Ev Defteri.) Canlı adres: https://tunctekbar-prog.github.io/ev-defteri/
+
+Önce telefon ekranı için tasarlandı (mobile-first). Sunucu ve hesap yok; tüm veriler kullanıcının tarayıcısında (`localStorage`) kalıyor.
 
 İleride geliştirmeye devam etmek için: **[GELISTIRME.md](GELISTIRME.md)** (mimari, veri modeli, verilen kararlar, sıradaki adımlar).
 
@@ -54,7 +56,7 @@ js/
     charts.js                Bağımlılıksız SVG çizgi grafik (ipucu kutusu, klavye desteği)
     screens/                 Dört ekran: home, add, payments, reports
 sw.js                        Service worker: internetsiz çalışma
-scripts/make-icons.js        icon.svg'deki çizimden PNG ikonlar üretir (npm run icons)
+scripts/make-icons.js        Kumbara simgesi: icon.svg ve PNG ikonları üretir (npm run icons)
 tests/                       node:test ile birim testler
 ```
 

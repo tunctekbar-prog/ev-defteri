@@ -1,4 +1,4 @@
-/* Ev Defteri: sıcak, sakin, büyük ve okunaklı. Önce telefon ekranı için tasarlandı. */
+/* Bütçe Dostum: sıcak, sakin, büyük ve okunaklı. Önce telefon ekranı için tasarlandı. */
 
 :root {
   --bg: #fbf7ef;
@@ -124,6 +124,48 @@ a {
 
 .card--welcome {
   background: linear-gradient(160deg, var(--green-soft), var(--surface) 70%);
+}
+.welcome__hero {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.welcome__logo {
+  display: block;
+  margin: 4px auto 12px;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(63, 107, 74, 0.25);
+}
+.welcome__hero h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+}
+.welcome__lead {
+  margin: 0;
+  color: var(--muted);
+}
+.welcome__points {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.welcome__points li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  line-height: 1.4;
+}
+.welcome__point-icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 1.15rem;
 }
 
 .muted {

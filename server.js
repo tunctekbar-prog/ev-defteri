@@ -37,7 +37,7 @@ createServer(async (req, res) => {
 })
   .on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.log(`\nEv Defteri zaten açık görünüyor: http://localhost:${PORT}`);
+      console.log(`\nBütçe Dostum zaten açık görünüyor: http://localhost:${PORT}`);
       console.log('Tarayıcıda bu adresi açabilirsin. (Başka bir pencerede çalışıyor olabilir.)');
     } else {
       console.error(err);
@@ -45,7 +45,7 @@ createServer(async (req, res) => {
     process.exitCode = 1;
   })
   .listen(PORT, '0.0.0.0', () => {
-    console.log(`\nEv Defteri hazır:  http://localhost:${PORT}`);
+    console.log(`\nBütçe Dostum hazır:  http://localhost:${PORT}`);
     const lan = Object.values(networkInterfaces()).flat().find((i) => i && i.family === 'IPv4' && !i.internal);
     if (lan) {
       console.log(`Telefondan (aynı Wi-Fi): http://${lan.address}:${PORT}`);

@@ -7,7 +7,7 @@
 // Yeni bir dosya eklersen FILES listesine de ekle (testler eksik dosyayı yakalar).
 // Sürüm değişince CACHE adını da değiştir; eski önbellek kendiliğinden silinir.
 
-const CACHE = 'evdefteri-0.3.1';
+const CACHE = 'butcedostum-0.4.0';
 const NETWORK_TIMEOUT = 3000;
 
 const FILES = [
@@ -57,7 +57,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k.startsWith('evdefteri-') && k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => (k.startsWith('butcedostum-') || k.startsWith('evdefteri-')) && k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim()),
   );
 });

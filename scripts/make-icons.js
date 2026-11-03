@@ -1,17 +1,43 @@
-// icons/icon.svg'deki ev çizimini bağımlılıksız PNG'lere çevirir (PWA ve iPhone ana ekranı için).
-// Çizim değişirse buradaki şekli de güncelleyip çalıştır:  npm run icons
+// Uygulama simgesi (kumbara) tek yerde tanımlı: buradan hem icons/icon.svg hem PNG'ler üretilir
+// (PWA ve iPhone ana ekranı için). Bağımlılık yok. Çizimi değiştirince çalıştır:  npm run icons
 import { writeFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-const GREEN = [0x5e, 0x8b, 0x68];
-const CREAM = [0xfb, 0xf7, 0xef];
-const CLAY = [0xc9, 0x8b, 0x5a];
+const GREEN = '#5E8B68';
+const GREEN_DARK = '#3F6648';
+const CREAM = '#FBF7EF';
+const CLAY = '#C98B5A';
+const CLAY_LIGHT = '#E0B48C';
 
-// 512'lik tuvalde ev (icon.svg ile aynı ölçüler)
-const HOUSE = [[256, 120], [400, 236], [400, 416], [288, 416], [288, 316], [224, 316], [224, 416], [112, 416], [112, 236]];
+// 512'lik tuvalde kumbara; sırayla üst üste çizilir
+const SHAPES = [
+  { type: 'poly', points: [[178, 214], [196, 150], [246, 196]], fill: CREAM }, // kulak
+  { type: 'rect', x: 176, y: 340, w: 46, h: 76, r: 16, fill: CREAM }, // ön bacak
+  { type: 'rect', x: 296, y: 340, w: 46, h: 76, r: 16, fill: CREAM }, // arka bacak
+  { type: 'ellipse', cx: 256, cy: 290, rx: 146, ry: 108, fill: CREAM }, // gövde
+  { type: 'rect', x: 380, y: 252, w: 48, h: 68, r: 18, fill: CREAM }, // burun
+  { type: 'ellipse', cx: 404, cy: 274, rx: 6, ry: 8, fill: GREEN }, // burun delikleri
+  { type: 'ellipse', cx: 404, cy: 298, rx: 6, ry: 8, fill: GREEN },
+  { type: 'ellipse', cx: 336, cy: 258, rx: 11, ry: 11, fill: GREEN_DARK }, // göz
+  { type: 'ellipse', cx: 256, cy: 126, rx: 40, ry: 40, fill: CLAY }, // madeni para
+  { type: 'ellipse', cx: 256, cy: 126, rx: 26, ry: 26, fill: CLAY_LIGHT },
+  { type: 'rect', x: 218, y: 204, w: 76, h: 14, r: 7, fill: GREEN_DARK }, // para yarığı
+];
 
-function inPolygon(x, y, pts) {
+const SHIFT_X = -12; // burun sağda olduğu için çizimi biraz sola alıp ortala
+
+const hex = (c) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+
+function inShape(x, y, s) {
+  if (s.type === 'ellipse') return ((x - s.cx) / s.rx) ** 2 + ((y - s.cy) / s.ry) ** 2 <= 1;
+  if (s.type === 'rect') {
+    if (x < s.x || x > s.x + s.w || y < s.y || y > s.y + s.h) return false;
+    const cx = Math.min(Math.max(x, s.x + s.r), s.x + s.w - s.r);
+    const cy = Math.min(Math.max(y, s.y + s.r), s.y + s.h - s.r);
+    return (x - cx) ** 2 + (y - cy) ** 2 <= s.r ** 2;
+  }
   let inside = false;
+  const pts = s.points;
   for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
     const [xi, yi] = pts[i];
     const [xj, yj] = pts[j];
@@ -20,30 +46,36 @@ function inPolygon(x, y, pts) {
   return inside;
 }
 
-function inHouse(x, y) {
-  if (!inPolygon(x, y, HOUSE)) return false;
-  // Alt köşeler 24 px yuvarlak
-  for (const [cx, cy] of [[136, 392], [376, 392]]) {
-    const outside = (cx < 256 ? x < cx : x > cx) && y > cy;
-    if (outside && (x - cx) ** 2 + (y - cy) ** 2 > 24 ** 2) return false;
-  }
-  return true;
-}
-
 function inRoundedRect(x, y, r) {
-  const cx = Math.min(Math.max(x, r), 512 - r);
-  const cy = Math.min(Math.max(y, r), 512 - r);
-  return (x - cx) ** 2 + (y - cy) ** 2 <= r * r;
+  return inShape(x, y, { type: 'rect', x: 0, y: 0, w: 512, h: 512, r });
 }
 
 /** Tuval koordinatındaki rengi (veya saydamsa null) döndürür. */
 function colorAt(x, y, { maskable }) {
   if (!maskable && !inRoundedRect(x, y, 112)) return null;
-  // Maskable: telefon simgeyi daireye/kareye kırpar; ev güvenli alanda kalsın diye %80'e küçülür
+  // Maskable: telefon simgeyi daireye/kareye kırpar; çizim güvenli alanda kalsın diye %80'e küçülür
   const [hx, hy] = maskable ? [256 + (x - 256) / 0.8, 256 + (y - 256) / 0.8] : [x, y];
-  if ((hx - 256) ** 2 + (hy - 250) ** 2 <= 30 ** 2) return CLAY;
-  if (inHouse(hx, hy)) return CREAM;
-  return GREEN;
+  for (let i = SHAPES.length - 1; i >= 0; i--) if (inShape(hx - SHIFT_X, hy, SHAPES[i])) return hex(SHAPES[i].fill);
+  return hex(GREEN);
+}
+
+function toSvg() {
+  const el = (s) => {
+    if (s.type === 'ellipse') return s.rx === s.ry
+      ? `<circle cx="${s.cx}" cy="${s.cy}" r="${s.rx}" fill="${s.fill}"/>`
+      : `<ellipse cx="${s.cx}" cy="${s.cy}" rx="${s.rx}" ry="${s.ry}" fill="${s.fill}"/>`;
+    if (s.type === 'rect') return `<rect x="${s.x}" y="${s.y}" width="${s.w}" height="${s.h}" rx="${s.r}" fill="${s.fill}"/>`;
+    return `<polygon points="${s.points.map((p) => p.join(',')).join(' ')}" fill="${s.fill}"/>`;
+  };
+  return [
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">',
+    `  <rect width="512" height="512" rx="112" fill="${GREEN}"/>`,
+    `  <g transform="translate(${SHIFT_X} 0)">`,
+    ...SHAPES.map((s) => `    ${el(s)}`),
+    '  </g>',
+    '</svg>',
+    '',
+  ].join('\n');
 }
 
 function render(size, opts) {
@@ -100,6 +132,8 @@ function encodePng(size, rgba) {
 }
 
 const OUT = new URL('../icons/', import.meta.url);
+writeFileSync(new URL('icon.svg', OUT), toSvg());
+console.log('icons/icon.svg');
 const FILES = [
   ['icon-192.png', 192, { maskable: false }],
   ['icon-512.png', 512, { maskable: false }],

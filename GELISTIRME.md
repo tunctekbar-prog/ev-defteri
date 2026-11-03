@@ -1,8 +1,10 @@
-# Ev Defteri: Geliştirme Notları
+# Bütçe Dostum: Geliştirme Notları
+
+> Uygulamanın eski adı **Ev Defteri** idi (0.4.0'da değişti). Depo ve adres eski adla kaldı: `ev-defteri`.
 
 Bu dosya, projeye ara verip geri döndüğünde (ya da başka bir geliştiriciye / Claude Code'a devrederken) nereden devam edeceğini bilmek için. Çalıştırma talimatları ve klasör yapısı [README.md](README.md) içinde.
 
-**Sürüm:** 0.3.1 (3 Kasım 2026)
+**Sürüm:** 0.4.0 (3 Kasım 2026)
 **Durum:** Web prototipi tamam, gerçek kullanıcıyla denenmeye hazır. İnternetsiz çalışıyor (PWA), ama henüz HTTPS'te yayında değil; bu yüzden telefona "ana ekrana ekle" ile kurulamıyor.
 
 ---
@@ -11,14 +13,14 @@ Bu dosya, projeye ara verip geri döndüğünde (ya da başka bir geliştiriciye
 
 | Ekran | Özellikler |
 |---|---|
-| **Ana sayfa** | Bu ayın harcaması, bütçe çubuğu ("%31'i kullanıldı"), en yakın 3 ödeme, yapışık "+ Harcama ekle" düğmesi, ilk açılışta karşılama + örnek veri |
+| **Ana sayfa** | Bu ayın harcaması, bütçe çubuğu ("%31'i kullanıldı"), en yakın 3 ödeme, yapışık "+ Harcama ekle" düğmesi. İlk açılışta karşılama kartı (kumbara simgesi, 3 kısa madde, bütçe sorusu, örnek veri); bu sırada yapışık düğme gizli |
 | **Ekle** | Tutar → kategoriye dokun → bitti. Harcama/Gelir. Not, tarih isteğe bağlı. **Sabit harcama** ve **sabit gelir** (her ay kendiliğinden eklenir). "Geri al" |
 | **Ödemeler** | Düzenli ödemeler, tarih sırasıyla. Değişkenler "Ödedim" ile, sabitler kendiliğinden işlenir ("Bu ay atla" / "Yine de ekle"). Ada göre simge (📶 İnternet, 🔥 Doğalgaz…). Altta "Sabit gelirler" bölümü |
 | **Raporlar → Aylık özet** | Gelen/giden/artan, bütçe, kategori dağılımı, geçen aya göre nazik notlar, kayıt listesi (sil + geri al). **Verilerim:** yedeği indir (JSON), yedekten yükle (onay + geri al), son yedek tarihi (30 günü geçince bölüm açık gelir ve nazikçe hatırlatır), tüm verileri sil |
 | **Raporlar → Aylar arası** | Ay seçimi (varsayılan geçen ay + bu ay), gelen/giden çizgi grafiği + tablo, kategori tablosu, detaylı kalem karşılaştırması (ilk 3 kalem, sınırsız eklenebilir). Değişim okları: harcamada azalış yeşil ↓, artış kırmızı ↑; gelirde tersi |
 | **Raporlar → Ev ekonomisi** | Günlük harcanabilir limit, ay sonu tahmini, gelirin ne kadarı cepte kaldı, 50/30/20 dağılımı, düzenli ödemelerin yıllık maliyeti |
 
-**Testler:** `npm test` ile 20 test (iş mantığı, veri katmanı, yedek, çevrimdışı dosya listesi) (iş mantığı + veri katmanı). Hepsi geçiyor.
+**Testler:** `npm test` ile 21 test (iş mantığı, veri katmanı, yedek, çevrimdışı dosya listesi) (iş mantığı + veri katmanı). Hepsi geçiyor.
 
 ---
 
@@ -46,7 +48,7 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 
 ---
 
-## 3. Veri modeli (localStorage anahtarı: `evdefteri`, sürüm 1)
+## 3. Veri modeli (localStorage anahtarı: `butcedostum`, sürüm 1)
 
 ```js
 {
@@ -65,6 +67,7 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 
 - **Sabit ödeme/gelir nasıl çalışır:** `store.syncFixedPayments(bugün)` başlangıç ayından bu aya kadar, tarihi gelmiş ve `paidMonths`'ta olmayan her ay için kayıt oluşturur. Uygulama açılınca, ekran değişince, uygulamaya geri dönülünce ve her veri değişikliğinden sonra çağrılır. Tekrar çağırmak güvenlidir.
 - **"Bu ay atla":** `paidMonths[ay] = { skipped: true }`. Böylece eşitleme o ayı yeniden eklemez. Sabit ödemeye bağlı bir kayıt Raporlar'dan silinirse de aynısı olur.
+- **Eski ad:** `storage.js` ilk açılışta `evdefteri` anahtarındaki veriyi okur, ilk kayıtta `butcedostum`'a yazıp eskisini siler. `backup.js` `app: 'evdefteri'` yedeklerini de kabul eder. Service worker eski `evdefteri-*` önbelleklerini siler.
 - **Şema değişirse:** `store.js` → `SCHEMA_VERSION`'ı artır ve `migrate()` içine eski veriyi yeni şekle çeviren kodu yaz. Kullanıcıların telefonundaki eski veri bozulmamalı.
 
 ---
@@ -105,7 +108,7 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 ## 6. Sıradaki adımlar (önerilen sıra)
 
 ### A. Gerçek kullanıcı öncesi (kısa iş)
-- [x] **Yedekle / Geri yükle** (0.2.1). Dosya biçimi: `{ app: 'evdefteri', backupVersion, exportedAt, data }`. Yüklerken `parseBackup()` doğrular, `store.importData()` `migrate()`'ten geçirir.
+- [x] **Yedekle / Geri yükle** (0.2.1). Dosya biçimi: `{ app: 'butcedostum', backupVersion, exportedAt, data }`. Yüklerken `parseBackup()` doğrular, `store.importData()` `migrate()`'ten geçirir.
 - [x] **Çevrimdışı çalışma** (0.3.0): `sw.js`, PNG ikonlar (`npm run icons` ile `scripts/make-icons.js` üretir), manifest ve iPhone meta etiketleri.
 - [x] **HTTPS'te yayın:** GitHub Pages. Depo: https://github.com/tunctekbar-prog/ev-defteri, adres: https://tunctekbar-prog.github.io/ev-defteri/
 - [ ] Telefonda "Ana ekrana ekle" ve uçak modunda açılış denenmeli (Android Chrome + iPhone Safari).
@@ -156,7 +159,7 @@ Derleme adımı yok: `git add -A`, `git commit -m "…"`, `git push` → GitHub 
 ### Claude Code ile devam ederken
 Yeni bir oturumda şöyle başlayabilirsin:
 
-> "ev-defteri klasöründeki projeye devam ediyoruz. Önce GELISTIRME.md ve README.md'yi oku. Sonra şunu yapalım: …"
+> "ev-defteri klasöründeki Bütçe Dostum projesine devam ediyoruz. Önce GELISTIRME.md ve README.md'yi oku. Sonra şunu yapalım: …"
 
 Bu dosyayı da güncel tut: her büyük değişiklikten sonra "Şu an ne var?" ve "Sıradaki adımlar" bölümlerini güncelle.
 
@@ -171,3 +174,4 @@ Bu dosyayı da güncel tut: her büyük değişiklikten sonra "Şu an ne var?" v
 | 0.2.1 | Yedeği indir / yedekten yükle (doğrulama, onay, geri al), son yedek tarihi ve 30 günlük hatırlatma |
 | 0.3.0 | İnternetsiz çalışma: service worker (önce ağ, 3 sn sonra önbellek), PNG ikonlar (192/512/maskable/iPhone), manifest ve iPhone meta etiketleri, kalıcı depolama isteği |
 | 0.3.1 | Aylar arası: bir ayda tutarı olmayan kalemde değişim "—", aynı tutarda "Aynı". Git deposu, GitHub Pages hazırlığı |
+| 0.4.0 | Yeni ad: **Bütçe Dostum**. Kumbara simgesi (`scripts/make-icons.js` svg + PNG'leri tek tanımdan üretir), yenilenen karşılama kartı, eski adla kayıtlı veri ve yedeklerin taşınması, tablolar telefona sığıyor |

@@ -1,7 +1,7 @@
 {
-  "name": "Ev Defteri",
-  "short_name": "Ev Defteri",
-  "description": "Evin bütçesi ve ödemeleri, sakin bir defterde.",
+  "name": "Bütçe Dostum",
+  "short_name": "Bütçe Dostum",
+  "description": "Evin bütçesi ve ödemeleri için sakin bir dost.",
   "lang": "tr",
   "id": "./",
   "start_url": "./#/home",

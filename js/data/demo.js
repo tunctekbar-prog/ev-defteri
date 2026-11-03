@@ -1,4 +1,4 @@
-// "Örnek verilerle göz at" için gerçekçi bir iki aylık ev defteri üretir.
+// "Örnek verilerle göz at" için gerçekçi bir iki aylık örnek kayıt üretir.
 
 import { addMonths, dueDateIn, monthKeyOf } from '../domain/dates.js';
 
