@@ -19,7 +19,13 @@ Bu dosya, projeye ara verip geri döndüğünde (ya da başka bir geliştiriciye
 | **Ad** | **Bütçe Dostum** (eski adı Ev Defteri). Depo/adres bilerek `ev-defteri` kaldı; kullanıcı linkin değişmesini istemedi |
 | **Yayınlama** | `git add -A && git commit -m "…" && git push` → 1-2 dk sonra canlıda. Bu bilgisayarda git girişi kayıtlı; `gh` CLI yok. Sürüm çıkarırken `sw.js` → `CACHE` ve `package.json` → `version` değişir |
 | **Test** | `npm test` → 21 test, hepsi geçiyor |
-| **Sıradaki iş** | **Kayıt düzenleme** (bkz. 6A). Kullanıcıya önerildi, henüz başlanmadı |
+| **Sıradaki iş** | 1) **Amblemi eski yeşil kumbaraya geri çevir** (aşağıda). 2) **Kayıt düzenleme** (bkz. 6A) |
+
+**⚠️ Kullanıcının isteği (3 Kasım akşamı): Amblem değişecek, renk teması KALACAK.**
+- **Amblem:** 0.4.0'daki sade kumbaraya dönülecek: yeşil zemin (`#5E8B68`, köşeleri yuvarlak), krem (`#FBF7EF`) yandan kumbara (gövde, kulak, iki bacak, sağda burun ve iki burun deliği, koyu yeşil göz), üstte koyu yeşil para yarığı, yarığın üstüne düşen bakır para (`#C98B5A`, içi açık bakır `#E0B48C`). Çizim 12 px sola kaydırılmış.
+- **Nasıl:** Çizim git geçmişinde hazır: `git show 9f2f247:scripts/make-icons.js > scripts/make-icons.js` ile al, `npm run icons` çalıştır (icon.svg + 4 PNG yeniden üretilir). Yeni dosyadaki açıklama yorumunu güncel tut.
+- **Dokunulmayacak:** 0.5.0'daki uygulama renkleri aynen kalır: kağıt dokulu zemin, krem kartlar, mürekkep yazı, adaçayı yeşili düğmeler (mürekkep çerçeve + yeşil gölge), bakır vurgular (`css/styles.css` → `:root`), manifest/`theme-color` (`#EFE6D2`).
+- **Kontrol et:** Karşılama kartındaki amblem (`.welcome__logo`) yeni zeminde iyi görünüyor mu? 0.4.0'da kumbaranın altında CSS gölgesi vardı, 0.5.0'da kaldırıldı; gerekirse geri eklenebilir. Sonra sürüm 0.5.1 (`sw.js` CACHE + `package.json`), test, telefon boyutunda ekran görüntüsü, push, canlıda doğrula.
 
 **Çalışma şekli (kullanıcının tercihleri):**
 - Kullanıcı Türkçe yazıyor, teknik olmayan, kısa ve net açıklama istiyor. Ne yapıldığını ve *neden* yapıldığını sade dille anlat.
