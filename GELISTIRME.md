@@ -5,7 +5,29 @@
 Bu dosya, projeye ara verip geri döndüğünde (ya da başka bir geliştiriciye / Claude Code'a devrederken) nereden devam edeceğini bilmek için. Çalıştırma talimatları ve klasör yapısı [README.md](README.md) içinde.
 
 **Sürüm:** 0.5.0 (3 Kasım 2026)
-**Durum:** Web prototipi tamam, gerçek kullanıcıyla denenmeye hazır. İnternetsiz çalışıyor (PWA), ama henüz HTTPS'te yayında değil; bu yüzden telefona "ana ekrana ekle" ile kurulamıyor.
+**Durum:** Web uygulaması (PWA) yayında, gerçek kullanıcıyla denenmeye hazır. İnternetsiz çalışıyor, telefona "Ana ekrana ekle" ile kurulabiliyor.
+
+---
+
+## 0. Hızlı başlangıç (yeni sohbet için önce bunu oku)
+
+| | |
+|---|---|
+| **Canlı adres** | https://tunctekbar-prog.github.io/ev-defteri/ |
+| **GitHub deposu** | https://github.com/tunctekbar-prog/ev-defteri (public, dal: `main`, GitHub Pages: `main` / root) |
+| **Yerel klasör** | `C:\Users\Administrator\Downloads\Difficulty Mods 42 1 2026-09-04T18-57Z upSzVa0vu\ev-defteri-v0.2.0\ev-defteri` |
+| **Ad** | **Bütçe Dostum** (eski adı Ev Defteri). Depo/adres bilerek `ev-defteri` kaldı; kullanıcı linkin değişmesini istemedi |
+| **Yayınlama** | `git add -A && git commit -m "…" && git push` → 1-2 dk sonra canlıda. Bu bilgisayarda git girişi kayıtlı; `gh` CLI yok. Sürüm çıkarırken `sw.js` → `CACHE` ve `package.json` → `version` değişir |
+| **Test** | `npm test` → 21 test, hepsi geçiyor |
+| **Sıradaki iş** | **Kayıt düzenleme** (bkz. 6A). Kullanıcıya önerildi, henüz başlanmadı |
+
+**Çalışma şekli (kullanıcının tercihleri):**
+- Kullanıcı Türkçe yazıyor, teknik olmayan, kısa ve net açıklama istiyor. Ne yapıldığını ve *neden* yapıldığını sade dille anlat.
+- Her değişiklikten sonra: testleri çalıştır, arayüzü telefon boyutunda (390 px) kontrol et, GitHub'a gönder, canlı sitenin güncellendiğini doğrula, sonra "yayında" diye haber ver.
+- Simge/tasarım gibi zevk kararlarında seçenek sun; kullanıcı görsel referans gönderebiliyor.
+- Arayüzü doğrulamak için: headless **Edge** + Chrome DevTools Protocol (Node'un yerleşik `WebSocket`'i ile) iyi çalışıyor. Bu ortamda headless Chrome'da Cache Storage "internal error" veriyor; Edge'de sorun yok. Telefon boyutu için `Emulation.setDeviceMetricsOverride` (390 px) kullan; pencere boyutu 492 px'in altına inmiyor.
+
+**Son oturum (3 Kasım 2026) özeti:** yedekle/geri yükle → internetsiz çalışma (PWA) → aylar arası tabloda "—" kuralı ve telefona sığan tablolar → GitHub Pages yayını → ad değişikliği (Bütçe Dostum) → kullanıcının referans görseline göre yeni amblem ve amblemden renk teması.
 
 ---
 
@@ -17,10 +39,12 @@ Bu dosya, projeye ara verip geri döndüğünde (ya da başka bir geliştiriciye
 | **Ekle** | Tutar → kategoriye dokun → bitti. Harcama/Gelir. Not, tarih isteğe bağlı. **Sabit harcama** ve **sabit gelir** (her ay kendiliğinden eklenir). "Geri al" |
 | **Ödemeler** | Düzenli ödemeler, tarih sırasıyla. Değişkenler "Ödedim" ile, sabitler kendiliğinden işlenir ("Bu ay atla" / "Yine de ekle"). Ada göre simge (📶 İnternet, 🔥 Doğalgaz…). Altta "Sabit gelirler" bölümü |
 | **Raporlar → Aylık özet** | Gelen/giden/artan, bütçe, kategori dağılımı, geçen aya göre nazik notlar, kayıt listesi (sil + geri al). **Verilerim:** yedeği indir (JSON), yedekten yükle (onay + geri al), son yedek tarihi (30 günü geçince bölüm açık gelir ve nazikçe hatırlatır), tüm verileri sil |
-| **Raporlar → Aylar arası** | Ay seçimi (varsayılan geçen ay + bu ay), gelen/giden çizgi grafiği + tablo, kategori tablosu, detaylı kalem karşılaştırması (ilk 3 kalem, sınırsız eklenebilir). Değişim okları: harcamada azalış yeşil ↓, artış kırmızı ↑; gelirde tersi |
+| **Raporlar → Aylar arası** | Ay seçimi (varsayılan geçen ay + bu ay), gelen/giden çizgi grafiği + tablo, kategori tablosu, detaylı kalem karşılaştırması (ilk 3 kalem, sınırsız eklenebilir). Değişim okları: harcamada azalış yeşil ↓, artış kırmızı ↑; gelirde tersi. Bir ayda tutar yoksa değişim "—", aynıysa "Aynı". 2 aylık tablolar telefona yana kaydırmadan sığar |
 | **Raporlar → Ev ekonomisi** | Günlük harcanabilir limit, ay sonu tahmini, gelirin ne kadarı cepte kaldı, 50/30/20 dağılımı, düzenli ödemelerin yıllık maliyeti |
 
-**Testler:** `npm test` ile 21 test (iş mantığı, veri katmanı, yedek, çevrimdışı dosya listesi) (iş mantığı + veri katmanı). Hepsi geçiyor.
+**Testler:** `npm test` ile 21 test (iş mantığı, veri katmanı, yedek, ad değişikliği taşıması, çevrimdışı dosya listesi). Hepsi geçiyor.
+
+**Görünüm:** Amblem `icons/icon.svg` (mürekkep çizgili kum rengi kumbara, filizli pencere, ₺'li bakır para, uzun yeşil gölge). Tema renkleri amblemden (`css/styles.css` → `:root`): kağıt dokulu zemin, krem kartlar, mürekkep yazı, adaçayı yeşili düğmeler (mürekkep çerçeve + yeşil gölge), bakır vurgular.
 
 ---
 
@@ -95,7 +119,7 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 ## 5. Bilinen eksikler ve riskler
 
 1. **Yedek elle alınıyor.** Veriler sadece o tarayıcıda; kullanıcı yedek almazsa telefon değişince her şey gider. Raporlar → Verilerim 30 günde bir hatırlatıyor ama ana sayfada uyarı yok. iOS Safari'de indirilen dosya "Dosyalar"a gider, kullanıcıya gösterilmesi gerekebilir.
-2. **HTTPS'te yayında değil.** Service worker yalnızca `localhost` veya `https` adreste çalışır. Telefondan `http://192.168.x.x:5173` ile açınca çevrimdışı mod ve ana ekrana ekleme çalışmaz; yayınlanınca çalışır.
+2. **Çevrimdışı mod yalnızca canlı adreste (https) ve `localhost`'ta çalışır.** Telefondan `http://192.168.x.x:5173` ile açınca çevrimdışı mod ve ana ekrana ekleme çalışmaz; telefonda denemek için canlı adresi kullan.
    - Önbellek stratejisi "önce ağ": internet varsa her zaman güncel dosya gelir, ağ 3 sn'de yanıt vermezse önbellek. Yani yeni sürüm kullanıcıya kendiliğinden ulaşır; "güncelleme var" düğmesi gerekmedi.
    - `navigator.storage.persist()` isteniyor: tarayıcı yer darlığında verileri silmesin diye (ana ekrana ekli uygulamalarda genelde kabul edilir). Yine de yedek önemli.
 3. **Ödemeyi geçmiş tarihli eklemek:** Ödemeler ekranından eklenen sabit ödeme bu aydan başlar; geçmiş aylar için kayıt oluşturmaz (bilinçli).
@@ -112,8 +136,10 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 - [x] **Yedekle / Geri yükle** (0.2.1). Dosya biçimi: `{ app: 'butcedostum', backupVersion, exportedAt, data }`. Yüklerken `parseBackup()` doğrular, `store.importData()` `migrate()`'ten geçirir.
 - [x] **Çevrimdışı çalışma** (0.3.0): `sw.js`, PNG ikonlar (`npm run icons` ile `scripts/make-icons.js` üretir), manifest ve iPhone meta etiketleri.
 - [x] **HTTPS'te yayın:** GitHub Pages. Depo: https://github.com/tunctekbar-prog/ev-defteri, adres: https://tunctekbar-prog.github.io/ev-defteri/
-- [ ] Telefonda "Ana ekrana ekle" ve uçak modunda açılış denenmeli (Android Chrome + iPhone Safari).
-- [ ] **Kayıt düzenleme:** Şu an kayıt sadece silinebiliyor; tutar/kategori düzeltme yok.
+- [x] **Ad + amblem + tema** (0.4.0-0.5.0): Bütçe Dostum, kumbara amblemi, amblemden renkler.
+- [ ] **Kayıt düzenleme (SIRADAKİ):** Şu an kayıt sadece silinebiliyor; tutar/kategori/not/tarih düzeltme yok. Öneri: Raporlar'daki kayıt listesinde satıra dokununca alttan açılan sayfa (`ctx.sheet`); `store.updateTransaction(id, patch)` + test. Sabit ödemeye bağlı kayıt düzenlenirse `paidMonths[ay].amount` de güncellenmeli.
+- [ ] Telefonda "Ana ekrana ekle" ve uçak modunda açılış denenmeli (Android Chrome + iPhone Safari). Kullanıcı henüz geri bildirim vermedi. Eski simgeyle eklenmişse kaldırıp yeniden eklemek gerekebilir.
+- [ ] Alan adı: Kullanıcı sordu; şimdilik github.io adresi yeterli. Alınırsa **ailelere vermeden önce** bağlanmalı (adres değişirse tarayıcıdaki kayıtlar yeni adreste görünmez).
 - [ ] 3-5 aileyle deneme; nerede takıldıklarını not et.
 
 ### B. Brief'teki yol haritası (her kat bir öncekinden sonra)
@@ -160,7 +186,7 @@ Derleme adımı yok: `git add -A`, `git commit -m "…"`, `git push` → GitHub 
 ### Claude Code ile devam ederken
 Yeni bir oturumda şöyle başlayabilirsin:
 
-> "ev-defteri klasöründeki Bütçe Dostum projesine devam ediyoruz. Önce GELISTIRME.md ve README.md'yi oku. Sonra şunu yapalım: …"
+> "ev-defteri klasöründeki Bütçe Dostum projesine devam ediyoruz. Önce GELISTIRME.md'yi (özellikle 0. bölümü) oku. Sonra şunu yapalım: …"
 
 Bu dosyayı da güncel tut: her büyük değişiklikten sonra "Şu an ne var?" ve "Sıradaki adımlar" bölümlerini güncelle.
 
