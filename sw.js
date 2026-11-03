@@ -7,7 +7,7 @@
 // Yeni bir dosya eklersen FILES listesine de ekle (testler eksik dosyayı yakalar).
 // Sürüm değişince CACHE adını da değiştir; eski önbellek kendiliğinden silinir.
 
-const CACHE = 'butcedostum-0.4.0';
+const CACHE = 'butcedostum-0.5.0';
 const NETWORK_TIMEOUT = 3000;
 
 const FILES = [

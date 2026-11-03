@@ -1,24 +1,29 @@
-/* Bütçe Dostum: sıcak, sakin, büyük ve okunaklı. Önce telefon ekranı için tasarlandı. */
+/* Bütçe Dostum: sıcak, sakin, büyük ve okunaklı. Önce telefon ekranı için tasarlandı.
+   Renkler amblemden (icons/icon.svg): kum/kağıt zemin, mürekkep çizgi, adaçayı yeşili, bakır para.
+   Yazı/zemin çiftlerinin hepsi en az 4.5:1 kontrastta (WCAG AA). */
 
 :root {
-  --bg: #fbf7ef;
-  --surface: #ffffff;
-  --surface-2: #f4ede1;
-  --border: #e6dccb;
-  --text: #3a332b;
-  --muted: #6f665a;
-  --green: #5e8b68;
-  --green-dark: #3f6b4a;
-  --green-soft: #e3eedf;
-  --earth: #c98b5a;
-  --earth-dark: #8a5a33;
-  --earth-soft: #f6e6d6;
-  --amber: #b9822a;
-  --danger: #a5523d;
+  --bg: #efe6d2; /* kağıt */
+  --surface: #fbf7ee; /* krem kart */
+  --surface-2: #e9ddc4; /* kum */
+  --border: #d8c6a2;
+  --ink: #2b251e; /* amblemin çizgileri */
+  --text: var(--ink);
+  --muted: #62564a;
+  --green: #4f6b52; /* adaçayı */
+  --green-dark: #3a5240;
+  --green-soft: #dfe5cf;
+  --shadow-green: #5b6b48; /* amblemin uzun gölgesi */
+  --earth: #b8692f; /* bakır */
+  --earth-dark: #8a4a20;
+  --earth-soft: #f1dec8;
+  --amber: #8c6118;
+  --danger: #9e4128;
+  --danger-soft: #f3d8cb;
 
   --radius: 18px;
   --radius-sm: 12px;
-  --shadow: 0 1px 2px rgba(58, 51, 43, 0.06), 0 4px 16px rgba(58, 51, 43, 0.06);
+  --shadow: 0 1px 2px rgba(43, 37, 30, 0.07), 0 4px 16px rgba(43, 37, 30, 0.07);
   --tap: 52px;
   --nav-h: 72px;
 
@@ -36,7 +41,13 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* Hafif kağıt dokusu: iki kat seyrek, soluk nokta */
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(rgba(150, 115, 70, 0.13) 1px, transparent 1.6px),
+    radial-gradient(rgba(150, 115, 70, 0.09) 1px, transparent 1.6px);
+  background-size: 29px 31px, 41px 37px;
+  background-position: 0 0, 13px 19px;
   color: var(--text);
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
   line-height: 1.45;
@@ -94,11 +105,11 @@ a {
 /* Masaüstünde telefon çerçevesi gibi görünsün */
 @media (min-width: 600px) {
   body {
-    background: #efe7d8;
+    background-color: #e3d6ba;
   }
   .app {
     background: var(--bg);
-    box-shadow: 0 0 0 1px var(--border), 0 10px 40px rgba(58, 51, 43, 0.12);
+    box-shadow: 0 0 0 1px var(--border), 0 10px 40px rgba(43, 37, 30, 0.14);
   }
 }
 
@@ -132,8 +143,6 @@ a {
 .welcome__logo {
   display: block;
   margin: 4px auto 12px;
-  border-radius: 18px;
-  box-shadow: 0 4px 14px rgba(63, 107, 74, 0.25);
 }
 .welcome__hero h2 {
   margin: 0 0 6px;
@@ -240,7 +249,7 @@ a {
 p.card.note {
   display: block;
   padding: 14px 16px;
-  border-color: #ecd3bb;
+  border-color: #e3c9a8;
 }
 
 /* ---------- Düğmeler ---------- */
@@ -264,9 +273,16 @@ p.card.note {
 .btn:active {
   transform: scale(0.98);
 }
+/* Ana düğme amblem gibi: mürekkep çerçeve + sağ alta düşen yeşil gölge */
 .btn--primary {
   background: var(--green);
   color: #fff;
+  border-color: var(--ink);
+  box-shadow: 3px 3px 0 var(--shadow-green);
+}
+.btn--primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--shadow-green);
 }
 .btn--primary:hover {
   background: var(--green-dark);
@@ -283,7 +299,7 @@ p.card.note {
 .btn--danger-ghost {
   background: transparent;
   color: var(--danger);
-  border-color: #e8c9bf;
+  border-color: #dcb6a4;
 }
 .btn--block {
   width: 100%;
@@ -304,7 +320,7 @@ p.card.note {
   position: sticky;
   bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));
   z-index: 5;
-  box-shadow: 0 6px 18px rgba(63, 107, 74, 0.3);
+  box-shadow: 4px 4px 0 var(--shadow-green), 0 6px 18px rgba(43, 37, 30, 0.18);
 }
 
 .link-btn {
@@ -629,8 +645,8 @@ legend {
   color: var(--earth-dark);
 }
 .chip--overdue {
-  background: #f7dfd5;
-  color: #8a3f2c;
+  background: var(--danger-soft);
+  color: #85361f;
 }
 
 .chips {
@@ -854,7 +870,7 @@ legend {
   grid-template-columns: repeat(4, 1fr);
   min-height: var(--nav-h);
   padding-bottom: env(safe-area-inset-bottom);
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(251, 247, 238, 0.96);
   border-top: 1px solid var(--border);
   backdrop-filter: blur(8px);
 }
@@ -909,10 +925,10 @@ legend {
   gap: 12px;
   padding: 12px 12px 12px 18px;
   border-radius: 16px;
-  background: #3a332b;
+  background: var(--ink);
   color: #fff;
   font-size: 0.95rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(43, 37, 30, 0.25);
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 .toast--show {
@@ -947,7 +963,7 @@ legend {
   color: var(--text);
 }
 .sheet::backdrop {
-  background: rgba(58, 51, 43, 0.45);
+  background: rgba(43, 37, 30, 0.45);
 }
 .sheet[open] {
   animation: sheet-up 0.22s ease-out;
@@ -1091,7 +1107,7 @@ legend {
   border-radius: 8px;
 }
 .chart__grid {
-  stroke: #ece5d8;
+  stroke: #e0d3b8;
   stroke-width: 1;
 }
 .chart__tick {
@@ -1139,7 +1155,7 @@ legend {
   border-radius: 10px;
   background: var(--surface);
   border: 1px solid var(--border);
-  box-shadow: 0 6px 18px rgba(58, 51, 43, 0.15);
+  box-shadow: 0 6px 18px rgba(43, 37, 30, 0.16);
   font-size: 0.85rem;
   pointer-events: none;
 }

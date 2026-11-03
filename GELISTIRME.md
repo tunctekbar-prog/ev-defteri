@@ -4,7 +4,7 @@
 
 Bu dosya, projeye ara verip geri döndüğünde (ya da başka bir geliştiriciye / Claude Code'a devrederken) nereden devam edeceğini bilmek için. Çalıştırma talimatları ve klasör yapısı [README.md](README.md) içinde.
 
-**Sürüm:** 0.4.0 (3 Kasım 2026)
+**Sürüm:** 0.5.0 (3 Kasım 2026)
 **Durum:** Web prototipi tamam, gerçek kullanıcıyla denenmeye hazır. İnternetsiz çalışıyor (PWA), ama henüz HTTPS'te yayında değil; bu yüzden telefona "ana ekrana ekle" ile kurulamıyor.
 
 ---
@@ -80,6 +80,7 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 | "Kira" kategorisi = "Kira, aidat" | Aidat ödemeleri de buraya yazılıyor |
 | Kredi kartı ödemesi varsayılan olarak harcamaya eklenmez, günlük limitte ayrılmaz, yıllık maliyete girmez | Kart harcamaları zaten tek tek giriliyorsa iki kere sayılır |
 | Değişim sütunu yalnızca ilk ve son ayın ikisinde de tutar varsa hesaplanır; yoksa "—". Tutar aynıysa "Aynı" | Bir ayda hiç yoksa fark, kalemin tutarının kendisi olurdu; karşılaştırma anlamı taşımaz (`domain/compare.js` → `changeBetween`) |
+| Tema renkleri amblemden: kağıt zemin, mürekkep (`--ink`), adaçayı yeşili, bakır; ana düğmeler mürekkep çerçeve + yeşil "uzun gölge" | Uygulama ile amblem tek bir kimlik gibi görünsün. Yazı/zemin çiftleri ≥ 4.5:1 kontrast. Renkler `css/styles.css` → `:root`'ta, amblem `scripts/make-icons.js`'te |
 | Grafik renkleri mavi/turuncu/aqua… (uygulamanın yeşili değil) | Renk körlüğü testinden geçen sıra. Yeşil-turuncu çifti geçmedi |
 | 8'den fazla kalemde renkler kesikli, sonra noktalı çizgiyle tekrar eder | Her kalem ayırt edilsin; tam rakamlar her zaman tabloda |
 | 50/30/20'de "Diğer" isteğe bağlı sayılır | Tartışılabilir; `domain/economy.js` → `NEEDS` |
@@ -175,3 +176,4 @@ Bu dosyayı da güncel tut: her büyük değişiklikten sonra "Şu an ne var?" v
 | 0.3.0 | İnternetsiz çalışma: service worker (önce ağ, 3 sn sonra önbellek), PNG ikonlar (192/512/maskable/iPhone), manifest ve iPhone meta etiketleri, kalıcı depolama isteği |
 | 0.3.1 | Aylar arası: bir ayda tutarı olmayan kalemde değişim "—", aynı tutarda "Aynı". Git deposu, GitHub Pages hazırlığı |
 | 0.4.0 | Yeni ad: **Bütçe Dostum**. Kumbara simgesi (`scripts/make-icons.js` svg + PNG'leri tek tanımdan üretir), yenilenen karşılama kartı, eski adla kayıtlı veri ve yedeklerin taşınması, tablolar telefona sığıyor |
+| 0.5.0 | Yeni amblem (mürekkep çizgili kum rengi kumbara, filizli pencere, ₺'li bakır para, uzun yeşil gölge) ve amblemden alınan renk teması: kağıt dokulu zemin, krem kartlar, adaçayı yeşili düğmeler |
