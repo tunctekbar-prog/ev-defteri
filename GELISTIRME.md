@@ -107,7 +107,8 @@ sw.js        Service worker: dosyaları önbelleğe alır, internetsiz açılmay
 ### A. Gerçek kullanıcı öncesi (kısa iş)
 - [x] **Yedekle / Geri yükle** (0.2.1). Dosya biçimi: `{ app: 'evdefteri', backupVersion, exportedAt, data }`. Yüklerken `parseBackup()` doğrular, `store.importData()` `migrate()`'ten geçirir.
 - [x] **Çevrimdışı çalışma** (0.3.0): `sw.js`, PNG ikonlar (`npm run icons` ile `scripts/make-icons.js` üretir), manifest ve iPhone meta etiketleri.
-- [ ] **HTTPS'te yayın** (GitHub Pages / Netlify): Klasör olduğu gibi yüklenir; derleme adımı yok. `server.js`, `tests/`, `scripts/` yüklenmese de olur. Yayından sonra telefonda "Ana ekrana ekle" denenmeli (Android Chrome + iPhone Safari).
+- [x] **HTTPS'te yayın:** GitHub Pages. Depo: https://github.com/tunctekbar-prog/ev-defteri, adres: https://tunctekbar-prog.github.io/ev-defteri/
+- [ ] Telefonda "Ana ekrana ekle" ve uçak modunda açılış denenmeli (Android Chrome + iPhone Safari).
 - [ ] **Kayıt düzenleme:** Şu an kayıt sadece silinebiliyor; tutar/kategori düzeltme yok.
 - [ ] 3-5 aileyle deneme; nerede takıldıklarını not et.
 
@@ -148,6 +149,9 @@ npm test      # birim testleri
 - Arayüz değişikliğinden sonra telefon boyutunda (390 px genişlik) kontrol et: tarayıcıda F12 → cihaz görünümü.
 - Erişilebilirlik kuralları: dokunma alanı en az 44-48 px, renk tek başına anlam taşımaz (yanında ikon/yazı), yazı en az 16 px.
 - Grafik eklerken: tek eksen, ince çizgi (2 px), lejant + altında tablo, renkleri `ui/charts.js` → `seriesStyle()`'dan al.
+
+### Yayınlama
+Derleme adımı yok: `git add -A`, `git commit -m "…"`, `git push` → GitHub Pages bir iki dakika içinde siteyi günceller. Sürüm çıkarırken `sw.js` → `CACHE` adını ve `package.json` sürümünü değiştir. Telefondaki uygulama yeni sürümü bir sonraki açılışta internetten alır.
 
 ### Claude Code ile devam ederken
 Yeni bir oturumda şöyle başlayabilirsin:
