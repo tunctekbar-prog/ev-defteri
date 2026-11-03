@@ -1,0 +1,12 @@
+{
+  "name": "ev-defteri",
+  "version": "0.3.1",
+  "private": true,
+  "description": "Aileler için sakin bir ev bütçe ve fatura defteri (web prototipi)",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "icons": "node scripts/make-icons.js"
+  }
+}
